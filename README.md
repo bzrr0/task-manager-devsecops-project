@@ -20,7 +20,7 @@ pip3 install -r requirements.txt
 1. Clone the repository using the following command:
 
     ```bash
-    git clone https://github.com/AdityaBagad/Task-Manager-using-Flask.git
+    git clone https://github.com/AdityaBagad/Task-Manager-using-Flask.git](https://github.com/bzrr0/task-manager-devsecops-project.git
     ```
 
 2. Install the dependencies using:
