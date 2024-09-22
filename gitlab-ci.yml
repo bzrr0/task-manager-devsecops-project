@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+  - security
+  - deploy
+
+build:
+  stage: build
+  script:
+    - echo "Compilando a aplicação"
+    - docker build -t flask-app .
+
+test:
+  stage: test
+  script:
+    - echo "Rodando testes unitários"
+    - pytest
+
+sast:
+  stage: security
+  script:
+    - echo "Rodando análise estática de segurança (SAST)"
+    - bandit -r taskmanager/
+
+dependency_check:
+  stage: security
+  image: owasp/dependency-check
+  script:
+    - echo "Rodando análise de dependências"
+    - dependency-check --scan ./ --format HTML --out dependency-check-report.html
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy em Staging"
+    - docker-compose up -d
+  environment:
+    name: staging
+    url: http://staging.example.com

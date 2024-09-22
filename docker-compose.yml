@@ -1,0 +1,36 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+    environment:
+      - FLASK_ENV=development
+
+  # Serviço para Elasticsearch, Logstash, Kibana (ELK Stack)
+  elk:
+    image: sebp/elk
+    ports:
+      - "5601:5601" # Kibana
+      - "9200:9200" # Elasticsearch
+      - "5044:5044" # Logstash
+    networks:
+      - app-network
+
+  # Serviço para Prometheus
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
